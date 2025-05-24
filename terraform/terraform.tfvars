@@ -1,0 +1,6 @@
+project_id        = "maps-project-test-444412"
+region            = "us-central1"
+topic_name        = "gmail-inbox-topic"
+function_name     = "gmail-webhook"
+entry_point       = "handler"
+source_dir        = "src"
