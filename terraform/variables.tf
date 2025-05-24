@@ -14,19 +14,7 @@ variable "topic_name" {
     type        = string
 }
 
-variable "function_name" {
-    description = "Cloud function Name"
+variable "function_email" {
+    description = "Email that recive pub sub"
     type        = string
-}
-
-
-variable "entry_point" {
-    description = "Cloud Function Entry Point"
-    type        = string
-}
-
-variable "source_dir" {
-    description = "Source directory that function exists"
-    type        = string
-
 }
