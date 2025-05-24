@@ -1,3 +1,5 @@
 .env
+*/keys
 /keys
 */.terraform
+*/node_modules
