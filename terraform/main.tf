@@ -17,6 +17,12 @@ resource "google_pubsub_topic" "gmail_topic" {
   name = var.topic_name
 }
 
+resource "google_project_service" "enable_secret_manager" {
+  project = var.project_id
+  service = "secretmanager.googleapis.com"
+}
+
+
 resource "google_pubsub_topic_iam_member" "pubsub_to_function" {
   topic = google_pubsub_topic.gmail_topic.name
   role  = "roles/pubsub.publisher"
