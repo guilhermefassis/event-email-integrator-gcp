@@ -1,4 +1,5 @@
 import { PubSub } from "@google-cloud/pubsub";
+import { v4 as uuidv4 } from "uuid";
 
 /**
  * Recebe um e-mail via HTTP e publica informações no Pub/Sub.
@@ -19,6 +20,7 @@ export const processEmail = async (req, res) => {
     }
     const { event } = req.body;
     const emailTextContent = event?.value?.value;
+    console.log(`DEBUG EVENT VALUE: ${JSON.stringify(emailContent)}`);
     const emailContent = parseEmailToJSON(emailTextContent);
     console.log(`DEBUG PARSED EMAIL: ${JSON.stringify(emailContent)}`);
 
@@ -27,10 +29,10 @@ export const processEmail = async (req, res) => {
     const body = emailContent.body || "";
     const to = emailContent.to || "";
     const sentAt = emailContent.sentAt || "";
-
-    console.log(
-      `DEBUG BODY MESSSAGE: {sender: ${sender}, subject: ${subject}, body: ${body}}, to: ${to}, sentAt: ${sentAt}`
-    );
+    const transactionId = uuidv4();
+    const date = new Date(sentAt ? sentAt : Date.now())
+      .toISOString()
+      .split("T")[0];
 
     // Crie um cliente Pub/Sub
     const pubsub = new PubSub({ projectId: process.env.GCP_PROJECT });
@@ -38,7 +40,7 @@ export const processEmail = async (req, res) => {
 
     // Publicar a mensagem no Pub/Sub
     const dataBuffer = Buffer.from(
-      JSON.stringify({ sender, subject, body, to, sentAt }),
+      JSON.stringify({ sender, subject, body, to, date, transactionId }),
       "utf-8"
     );
 

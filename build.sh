@@ -24,3 +24,17 @@ gcloud functions deploy gmail-publisher
         --allow-unauthenticated   
         --source=.    
         --set-env-vars="PUBSUB_TOPIC=$topic,GCP_PROJECT=$project"
+
+
+##########################################################################
+########################DEPLOY CONSUMER###################################
+
+gcloud functions deploy forwardToMake \
+  --runtime=nodejs22 \
+  --trigger-topic=gmail-inbox-topic \
+  --entry-point=forwardToMake \
+  --region=us-central1 \
+  --set-env-vars=MAKE_WEBHOOK_URL=https://hook.eu2.make.com/ig1vx0kby64cxqkr4vkyek209emc2e6m \
+  --memory=256MB \
+  --timeout=60s \
+  --allow-unauthenticated
